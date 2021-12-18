@@ -1,29 +1,29 @@
-/*
- using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using csharp_tutorial2.Helpers;
 using Xunit;
 
 namespace csharp_tutorial2
 {
-    public class Null03
+    public class Null
     {
         [Fact]
         public void Null_Coalescing()
         {
             string value = null;
-            
+
             // Null coalescing, if left side is null, take right side
             string print = value ?? "default value";
 
             Assert.Equal("default value", print);
-            
+
             // Same as normal one line condition
             string print2 = value != null ? value : "default value";
 
             Assert.Equal("default value", print2);
-            
+
             // Set something to value
             value = "This has something";
 
@@ -33,11 +33,11 @@ namespace csharp_tutorial2
         }
 
         [Fact]
-        public void Null_Coalescing_CompoudAssignment()
+        public void Null_Coalescing_CompoundAssignment()
         {
             string value = string.Empty;
-            
-            // value = value ?? "default value";
+
+            //value = value ?? "default value";
             value ??= "default value";
         }
 
@@ -55,9 +55,8 @@ namespace csharp_tutorial2
             {
                 Child = new NullExample { Text = "Abba" }
             };
-            
-            string text = hello.Child.Text;
 
+            string text = hello.Child.Text;
 
             try
             {
@@ -73,7 +72,7 @@ namespace csharp_tutorial2
 
             string text3 = hello?.Child?.Text;
             Assert.Equal(text, text3);
-            
+
             // Null coalescing check
             var text4 = hello?.Child?.Child?.Text ?? "Not set";
 
@@ -101,9 +100,9 @@ namespace csharp_tutorial2
                 // Do something
             }
         }
-        
-        #nullable enable
-        // Normally would just add <Nullable>enable</Nullable> to csproj-file to enable nullable for the while project
+
+#nullable enable
+// Normally would just add <Nullable>enable</Nullable> to csproj-file to enable nullable for the whole project
 
         [Fact]
         public void Nullable_ReferenceTypes()
@@ -122,8 +121,8 @@ namespace csharp_tutorial2
             else
             {
                 throw new Exception("Sensor not found");
-                // if return value would be nullable (SensorDto?), then null would be possible
-                // return null;
+                // if return value would be nullable (SensorDto?), then null would be possible 
+                //return null;
             }
         }
 
@@ -161,29 +160,28 @@ namespace csharp_tutorial2
         {
             if (sensor == null)
                 return double.MinValue;
-            
+
             return sensor.Data;
         }
-        
+
         // Get GetSensorAsync with nullable reference type
-        public static async Task<SensorDto?> GetSensorAsync(string sensorId = "iddqd")
+        public static async Task<SensorDto?> GetSensorAsync(string sensrorId = "iddqd")
         {
             using (var client = new HttpClient())
             {
-                var response = client.GetAsync($"http://dummy-sensors.azurewebsites.net/api/sensor/{sensorId}");
+                var response = await client.GetAsync($"http://dummy-sensors.azurewebsites.net/api/sensor/{sensrorId}");
 
                 if (!response.IsSuccessStatusCode)
                 {
                     return null;
-                    // throw new Exception("Sensor not found");
+                    //throw new Exception("Sensor not found");
                 }
 
                 var sensorJson = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<SensorDto>(sensorJson);
             }
         }
-        
-        #nullable disable
+
+#nullable disable
     }
 }
-*/
